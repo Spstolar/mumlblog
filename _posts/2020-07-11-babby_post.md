@@ -1,13 +1,12 @@
 ---
-title: "My Title"
-description: "Awesome description"
+title: "Howdy"
+description: "Babby's first post."
 layout: post
 toc: false
 comments: true
-image: images/some_folder/your_image.png
 hide: false
 search_exclude: true
-categories: [fastpages, jupyter]
+categories: [fastpages]
 metadata_key1: metadata_value1
 metadata_key2: metadata_value2
 ---

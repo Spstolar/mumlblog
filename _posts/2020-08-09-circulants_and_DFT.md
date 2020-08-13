@@ -1,9 +1,8 @@
-
 ---
 title: "Circulant Matrices and the Discrete Fourier Transform"
 description: "Awesome description"
 layout: post
-toc: false
+toc: true
 comments: true
 image: images/circulant_ex_1.svg
 hide: false
