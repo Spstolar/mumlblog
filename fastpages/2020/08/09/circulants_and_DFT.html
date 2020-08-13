@@ -1,23 +1,151 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Circulant Matrices and the Discrete Fourier Transform | Musical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Circulant Matrices and the Discrete Fourier Transform" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Awesome description" />
+<meta property="og:description" content="Awesome description" />
+<link rel="canonical" href="https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html" />
+<meta property="og:url" content="https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html" />
+<meta property="og:site_name" content="Musical Machine Learning" />
+<meta property="og:image" content="https://spstolar.github.io/mumlblog/images/circulant_ex_1.svg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-09T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Awesome description","@type":"BlogPosting","url":"https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html","dateModified":"2020-08-09T00:00:00-05:00","datePublished":"2020-08-09T00:00:00-05:00","headline":"Circulant Matrices and the Discrete Fourier Transform","image":"https://spstolar.github.io/mumlblog/images/circulant_ex_1.svg","mainEntityOfPage":{"@type":"WebPage","@id":"https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/mumlblog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://spstolar.github.io/mumlblog/feed.xml" title="Musical Machine Learning" /><link rel="shortcut icon" type="image/x-icon" href="/mumlblog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Circulant Matrices and the Discrete Fourier Transform | Musical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Circulant Matrices and the Discrete Fourier Transform" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Awesome description" />
+<meta property="og:description" content="Awesome description" />
+<link rel="canonical" href="https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html" />
+<meta property="og:url" content="https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html" />
+<meta property="og:site_name" content="Musical Machine Learning" />
+<meta property="og:image" content="https://spstolar.github.io/mumlblog/images/circulant_ex_1.svg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-09T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Awesome description","@type":"BlogPosting","url":"https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html","dateModified":"2020-08-09T00:00:00-05:00","datePublished":"2020-08-09T00:00:00-05:00","headline":"Circulant Matrices and the Discrete Fourier Transform","image":"https://spstolar.github.io/mumlblog/images/circulant_ex_1.svg","mainEntityOfPage":{"@type":"WebPage","@id":"https://spstolar.github.io/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
 
-<hr />
-<p>title: “Circulant Matrices and the Discrete Fourier Transform”
-description: “Awesome description”
-layout: post
-toc: false
-comments: true
-image: images/circulant_ex_1.svg
-hide: false
-search_exclude: true
-categories: [fastpages]
-metadata_key1: metadata_value1
-metadata_key2: metadata_value2
-—</p>
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://spstolar.github.io/mumlblog/feed.xml" title="Musical Machine Learning" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
 
-<h1 id="circulant-matrices-and-the-discrete-fourier-transform">Circulant Matrices and the Discrete Fourier Transform</h1>
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/mumlblog/">Musical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/mumlblog/about/">About Me</a><a class="page-link" href="/mumlblog/search/">Search</a><a class="page-link" href="/mumlblog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Circulant Matrices and the Discrete Fourier Transform</h1><p class="page-description">Awesome description</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-08-09T00:00:00-05:00" itemprop="datePublished">
+        Aug 9, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      14 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/mumlblog/categories/#fastpages">fastpages</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#circulant-matrices-and-the-discrete-fourier-transform">Circulant Matrices and the Discrete Fourier Transform</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#discrete-fourier-transform">Discrete Fourier Transform</a></li>
+<li class="toc-entry toc-h2"><a href="#define-vectors">Define Vectors</a></li>
+<li class="toc-entry toc-h2"><a href="#circular-convolutions">Circular Convolutions</a></li>
+<li class="toc-entry toc-h2"><a href="#circular-convolution-is-multiplication-with-a-circulant-matrix">Circular Convolution is Multiplication with a Circulant Matrix</a></li>
+<li class="toc-entry toc-h2"><a href="#how-dft-is-related">How DFT Is Related</a></li>
+<li class="toc-entry toc-h2"><a href="#how-does-this-work">How Does This Work</a></li>
+<li class="toc-entry toc-h2"><a href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul><h1 id="circulant-matrices-and-the-discrete-fourier-transform">
+<a class="anchor" href="#circulant-matrices-and-the-discrete-fourier-transform" aria-hidden="true"><span class="octicon octicon-link"></span></a>Circulant Matrices and the Discrete Fourier Transform</h1>
 
 <p>While reading <a href="https://towardsdatascience.com/deriving-convolution-from-first-principles-4ff124888028">this great post</a> I saved off the paper that it references: <a href="https://arxiv.org/abs/1805.05533">Discovering transforms: a tutorial on circulant matrices, circular convolution, and the discrete Fourier transform</a> by Bassam Bamieh. This last week, I dug into the paper and found it super readable and interesting. So this is just my digging into some of the details and making pictures to help things make sense for me.</p>
 
-<h2 id="discrete-fourier-transform">Discrete Fourier Transform</h2>
+<h2 id="discrete-fourier-transform">
+<a class="anchor" href="#discrete-fourier-transform" aria-hidden="true"><span class="octicon octicon-link"></span></a>Discrete Fourier Transform</h2>
 
 <p>The Discrete Fourier Transform (DFT) is a very useful operator that takes a tuple of complex numbers to another tuple of complex numbers. You typically see it defined as an operator on length-n complex vectors
 $\mathrm{DFT}: \mathbb{C}^n \to \mathbb{C}^n$ as a rule which sends $a \mapsto \hat{a}$:</p>
@@ -26,7 +154,8 @@ $\mathrm{DFT}: \mathbb{C}^n \to \mathbb{C}^n$ as a rule which sends $a \mapsto \
 
 <p>The issue is that this kind of comes out of nowhere. You might see it in a course without knowing anything about complex analysis or linear algebra where the transform will be defined, perhaps used as an excuse to explain some of the basics of complex analysis, then some properties of the transform will be derived and you’ll use it as a tool for say, solving ODEs. There is a <a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">lot of depth</a> to this transformation. Rather than discuss its interpretation and uses, I will give some of the high level details of the Bamieh paper which shows how to arrive at it from naturally exploring circular convolutions.</p>
 
-<h2 id="define-vectors">Define Vectors</h2>
+<h2 id="define-vectors">
+<a class="anchor" href="#define-vectors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Vectors</h2>
 
 <p>For all the examples we will run, we make two simple vectors:</p>
 
@@ -39,7 +168,8 @@ $\mathrm{DFT}: \mathbb{C}^n \to \mathbb{C}^n$ as a rule which sends $a \mapsto \
 <span class="n">b</span> <span class="o">&gt;</span> <span class="n">array</span><span class="p">([</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">0</span><span class="p">])</span>
 </code></pre></div></div>
 
-<h2 id="circular-convolutions">Circular Convolutions</h2>
+<h2 id="circular-convolutions">
+<a class="anchor" href="#circular-convolutions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Circular Convolutions</h2>
 
 <p>A <a href="https://en.wikipedia.org/wiki/Convolution">convolution</a> of two functions $f, g$ is a way to produce a third function that has properties of the two components:
 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>⋆</mo><mi>g</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><msubsup><mo>∫</mo><mrow><mo>−</mo><mi mathvariant="normal">∞</mi></mrow><mi mathvariant="normal">∞</mi></msubsup><mi>f</mi><mo stretchy="false">(</mo><mi>τ</mi><mo stretchy="false">)</mo><mi>g</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><mi>τ</mi><mo stretchy="false">)</mo><mi>d</mi><mi>τ</mi></mrow><annotation encoding="application/x-tex">f \star g (t) = \int_{-\infty}^\infty f(\tau) g(t - \tau) d \tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋆</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.273443em;vertical-align:-0.41415100000000005em;"></span><span class="mop"><span class="mop op-symbol small-op" style="margin-right:0.19445em;position:relative;top:-0.0005599999999999772em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8592920000000001em;"><span style="top:-2.34418em;margin-left:-0.19445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">∞</span></span></span></span><span style="top:-3.2579000000000002em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.41415100000000005em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.1132em;">τ</span><span class="mclose">)</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.1132em;">τ</span><span class="mclose">)</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.1132em;">τ</span></span></span></span></p>
@@ -88,7 +218,7 @@ $\mathrm{DFT}: \mathbb{C}^n \to \mathbb{C}^n$ as a rule which sends $a \mapsto \
 
 <p>However, we are interested in the <strong>circular</strong> convolution, where we treat the domain as periodic. Rather than summing over all of the integers, we are thinking of doing arithmetic modulo n. Thus it is useful to view vectors are being circularly arranged:</p>
 
-<p><img src="../../../../images/circle_vector.svg" alt="test2" /></p>
+<p><img src="../../../../images/circle_vector.svg" alt="test2"></p>
 
 <p>Then the circular convolution of two vectors is defined:
 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⋆</mo><mi>x</mi><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>l</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><msub><mi>a</mi><mrow><mi>k</mi><mo>−</mo><mi>l</mi></mrow></msub><msub><mi>x</mi><mi>l</mi></msub></mrow><annotation encoding="application/x-tex">a \star x [k] = \sum_{l = 0}^{n-1} a_{k -l} x_l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋆</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">x</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.253718em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954008em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">−</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>
@@ -96,7 +226,7 @@ this is described in more detail in the paper.</p>
 
 <p>To visualize this first we use a drawing to indicate the inner product of two vectors by stacking the circular representation of one on top of the other:</p>
 
-<p><img src="../../../../images/comp_mult.svg" alt="component-wise multiplication" /></p>
+<p><img src="../../../../images/comp_mult.svg" alt="component-wise multiplication"></p>
 
 <p>We multiply components by matching the top circular vector to the bottom one. Using this, we get the circular convolution of two vectors by</p>
 
@@ -105,7 +235,7 @@ this is described in more detail in the paper.</p>
   <li>performing a bunch of inner products with each rotation of the “convolving vector” that we flipped (here we use $a$) with the second-argument vector  (here we use $x$ or $b$ in the examples).</li>
 </ol>
 
-<p><img src="../../../../images/circular_convolution.svg" alt="circular convolution" /></p>
+<p><img src="../../../../images/circular_convolution.svg" alt="circular convolution"></p>
 
 <p>Thus coordinate <code class="highlighter-rouge">k</code> of the circular convolution $a \star x$ is the inner product of x with $a$ reversed and then rotated $k$ times.</p>
 
@@ -126,11 +256,12 @@ this is described in more detail in the paper.</p>
 <span class="o">&gt;</span> <span class="n">array</span><span class="p">([</span> <span class="mf">9.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span>  <span class="mf">7.</span><span class="p">,</span> <span class="mf">13.</span><span class="p">])</span>
 </code></pre></div></div>
 
-<h2 id="circular-convolution-is-multiplication-with-a-circulant-matrix">Circular Convolution is Multiplication with a Circulant Matrix</h2>
+<h2 id="circular-convolution-is-multiplication-with-a-circulant-matrix">
+<a class="anchor" href="#circular-convolution-is-multiplication-with-a-circulant-matrix" aria-hidden="true"><span class="octicon octicon-link"></span></a>Circular Convolution is Multiplication with a Circulant Matrix</h2>
 
 <p>The circulant matrix of a vector is built like this:</p>
 
-<p><img src="../../../../images/circulant_shift.svg" alt="create circulant" /></p>
+<p><img src="../../../../images/circulant_shift.svg" alt="create circulant"></p>
 
 <p>There is a <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.circulant.html"><code class="highlighter-rouge">scipy</code> method</a> for constructing them:</p>
 
@@ -220,7 +351,8 @@ this is described in more detail in the paper.</p>
 <p>Circular convolution is just multiplying by the circulant matrix and moreover (see the paper)
 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⋆</mo><mi>x</mi><mo>=</mo><msub><mi>C</mi><mi>a</mi></msub><mi>x</mi><mo>=</mo><msub><mi>C</mi><mi>x</mi></msub><mi>a</mi><mo>=</mo><mi>a</mi><mo>⋆</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">a \star x = C_a x = C_x a = a \star x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋆</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋆</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span></p>
 
-<h2 id="how-dft-is-related">How DFT Is Related</h2>
+<h2 id="how-dft-is-related">
+<a class="anchor" href="#how-dft-is-related" aria-hidden="true"><span class="octicon octicon-link"></span></a>How DFT Is Related</h2>
 
 <p>Now let’s use the numpy implementation of the discrete fourier transform:</p>
 
@@ -267,7 +399,8 @@ this is described in more detail in the paper.</p>
 <p>Cool!
 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi><mi mathvariant="normal">T</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo stretchy="false">(</mo><mover accent="true"><mi>a</mi><mo>^</mo></mover><mo>∗</mo><mover accent="true"><mi>b</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mo>⋆</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">\mathrm{DFT}^{-1}(\hat{a} * \hat{b}) = a \star b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.137338em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">D</span><span class="mord mathrm">F</span><span class="mord mathrm">T</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.887338em;"><span style="top:-3.1362300000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">a</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;">^</span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.2078799999999998em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9578799999999998em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">b</span></span></span><span style="top:-3.26344em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;">^</span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋆</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span></p>
 
-<h2 id="how-does-this-work">How Does This Work</h2>
+<h2 id="how-does-this-work">
+<a class="anchor" href="#how-does-this-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>How Does This Work</h2>
 
 <p>Hopefully this notebook will interest you enough to dive into the source paper to find out why this “trick” works, but here are some of the details with examples.</p>
 
@@ -359,7 +492,7 @@ this is described in more detail in the paper.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">step_eigs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">step_eigs</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="../../../../images/output_91_1.png" alt="png" /></p>
+<p><img src="../../../../images/output_91_1.png" alt="png"></p>
 
 <p>These are the roots of unity. In this case, because we were looking at $n = 5$, they are the fifth-roots of unity: $\exp \left(\frac{i 2 \pi k}{5} \right)$ for $k = 0, 1, 2, 3, 4$.</p>
 
@@ -432,7 +565,7 @@ this is described in more detail in the paper.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">fifth_roots</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">fifth_roots</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="../../../../images/output_109_1.png" alt="png" /></p>
+<p><img src="../../../../images/output_109_1.png" alt="png"></p>
 
 <p>So, the way it supplied roots was sort of “out of order”. We the one on the top which was at index 2:</p>
 
@@ -560,7 +693,8 @@ this is described in more detail in the paper.</p>
            <span class="p">[</span> <span class="bp">True</span><span class="p">,</span>  <span class="bp">True</span><span class="p">,</span>  <span class="bp">True</span><span class="p">,</span>  <span class="bp">True</span><span class="p">,</span>  <span class="bp">True</span><span class="p">]])</span>
 </code></pre></div></div>
 
-<h2 id="summary">Summary</h2>
+<h2 id="summary">
+<a class="anchor" href="#summary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summary</h2>
 
 <p>What this is saying is that $W$ also provided eigenvectors for $C_a$ and they have eigenvalues from $\mathrm{DFT}(a) = \hat{a}$. This nice matrix not only diagonalizes $S^<em>$ but it also diagonalizes *all circulant matrices simultaneously</em>.</p>
 
@@ -594,3 +728,44 @@ this is described in more detail in the paper.</p>
 </ul>
 
 <p>This last one is especially interesting, convolution is the time-domain equivalent of simple component-wise multiplication in the frequency domain.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="Spstolar/mumlblog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/mumlblog/fastpages/2020/08/09/circulants_and_DFT.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/mumlblog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/mumlblog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/mumlblog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A blog where I think about music, machine learning, and other things that interest me.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/spstolar" title="spstolar"><svg class="svg-icon grey"><use xlink:href="/mumlblog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/psistolar" title="psistolar"><svg class="svg-icon grey"><use xlink:href="/mumlblog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
