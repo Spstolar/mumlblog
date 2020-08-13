@@ -1,0 +1,81 @@
+
+<h1 id="making-music-with-pretty_midi">Making Music with pretty_midi</h1>
+
+<h2 id="midi-music">MIDI Music</h2>
+
+<p>A while back, when I was first learning Python, a friend and I made a program that generated random music by iterating through a song one note at a time randomly picking the note length and pitch for the notes with increasingly strict rules. My friend figured out how to use <a href="https://pypi.org/project/MIDIUtil/">MIDIUtil</a> to create a midi file by writing down a sequence of note events, where each event says something about:</p>
+
+<ul>
+  <li>velocity - how loud the note should be played</li>
+  <li>pitch - an integer value for telling a midi play what frequency to play</li>
+  <li>note start - when the note should start playing</li>
+  <li>note end - when it should stop</li>
+</ul>
+
+<p>You can do a lot of music with just that information, and if you make simple choices for notes, with the right MIDI player you can get surprisingly listenable music. I have wanted to expand on this program for a while in various ways:</p>
+
+<ul>
+  <li>generating music by applying machine learning techniques to various collections of midi files (like this <a href="https://www.google.com/doodles/celebrating-johann-sebastian-bach">Google Bach doodle</a>)</li>
+  <li>making something more interactive (something involving the console where you can add motifs and ideas on the play and have them played back)</li>
+  <li>feed the program just a text file with a simplistic music notation to easily create ideas that can get more complex (like <a href="https://tidalcycles.org/index.php/Welcome">TidalCycles</a> which uses Haskell and SuperCollider).</li>
+</ul>
+
+<h2 id="creating-midi-files-with-python">Creating MIDI Files with Python</h2>
+
+<p>I searched around on pypi a bit and found a promising package to start writing MIDI files with: <a href="https://pypi.org/project/pretty_midi/">pretty_midi</a>. It’s a <a href="https://github.com/craffel/pretty-midi">project on GitHub</a> that seems to still be active (part of why I am not just using MIDIUtil again is that I remember I slightly annoying setup and it seems to be inactive). After a simple install, and running the second example <a href="http://craffel.github.io/pretty-midi/">from the documentation</a> I found that it easily generated pleasing sounds that (after a bit of fitzing) I could simply listen to with VLC Media Player. Before I just imported the files into Reaper where I could use a custom VST, but this makes iterating a bit quicker.</p>
+
+<p>Here is an example I made where two instruments are playing a very minimalist piece:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pretty_midi</span>
+
+<span class="c1"># Create a PrettyMIDI object
+</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">()</span>
+
+<span class="c1"># Create an Instrument instance for a cello instrument
+</span><span class="n">cello_program</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">instrument_name_to_program</span><span class="p">(</span><span class="s">'Cello'</span><span class="p">)</span>
+<span class="n">cello</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">Instrument</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">cello_program</span><span class="p">)</span>
+
+<span class="c1"># do the same for a piano
+</span><span class="n">piano_program</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">instrument_name_to_program</span><span class="p">(</span><span class="s">'Acoustic Grand Piano'</span><span class="p">)</span>
+<span class="n">piano</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">Instrument</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">piano_program</span><span class="p">)</span>
+
+<span class="c1"># Add the instruments to the PrettyMIDI object
+</span><span class="n">ensemble</span><span class="o">.</span><span class="n">instruments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cello</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">instruments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">piano</span><span class="p">)</span>
+
+
+<span class="n">song_length_in_seconds</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">bpm</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">beat_length</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">bpm</span>
+<span class="n">num_beats</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">song_length_in_seconds</span> <span class="o">/</span> <span class="n">beat_length</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">beat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_beats</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">beat</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">note_name</span> <span class="o">=</span> <span class="s">'C5'</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">note_name</span> <span class="o">=</span> <span class="s">'D5'</span>
+    <span class="n">note_number</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">note_name_to_number</span><span class="p">(</span><span class="n">note_name</span><span class="p">)</span>
+    <span class="n">note_start</span> <span class="o">=</span> <span class="n">beat</span> <span class="o">*</span> <span class="n">beat_length</span>
+    <span class="n">note_end</span> <span class="o">=</span> <span class="n">note_start</span> <span class="o">+</span> <span class="n">beat_length</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">Note</span><span class="p">(</span><span class="n">velocity</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="n">note_number</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">note_start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">note_end</span><span class="p">)</span>
+    <span class="n">cello</span><span class="o">.</span><span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+    <span class="n">piano</span><span class="o">.</span><span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">write_song</span><span class="p">():</span>
+    <span class="c1"># Write out the MIDI data
+</span>    <span class="n">ensemble</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">'ensemble.mid'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">write_song</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>This is a simple example, yet it shows the basics of the process that I will expand on:</p>
+
+<ul>
+  <li>add notes one at a time</li>
+  <li>incorporate some randomness into the note properties (here pitch changes deterministically, but that will soon change)</li>
+  <li>using multiple instruments</li>
+</ul>
+
+<p>I will begin to add to this, hopefully reaching what we achieved during my first experience with Python and MIDI and then think about ways to expand it and then start to apply some of my fastbook reading to it.</p>

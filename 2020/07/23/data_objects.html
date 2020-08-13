@@ -1,0 +1,97 @@
+
+<h1 id="dataplox">DataPlox</h1>
+
+<p>In understanding how to properly feed young, growing models, it is useful to know some of the main data objects in PyTorch and fastai. Fastai extends many of the fundamental PyTorch objects. Here’s the picture that I have in my head:</p>
+
+<p><img src="../../../../images/dataobjects.png" alt="The relationships between important data objects." /></p>
+
+<p>For the main PyTorch data classes:</p>
+
+<ul>
+  <li><a href="https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset">Dataset</a></li>
+  <li><a href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader">DataLoader</a></li>
+</ul>
+
+<p>The fastai library extends them with:</p>
+
+<ul>
+  <li><a href="http://dev.fast.ai/data.core#Datasets">Datasets</a></li>
+  <li><a href="https://dev.fast.ai/data.core#DataLoaders">DataLoaders</a></li>
+</ul>
+
+<p>and adds a useful class which can help construct the others:</p>
+
+<ul>
+  <li><a href="http://dev.fast.ai/data.block#DataBlock">DataBlock</a></li>
+</ul>
+
+<h1 id="datablock">DataBlock</h1>
+
+<p>This is a fastai object <a href="http://dev.fast.ai/data.block">which helps you build Datasets and DataLoaders</a>. In addition to Chapter 6 of the fastbook, there is also <a href="http://dev.fast.ai/tutorial.datablock">a tutorial in the fastai docs</a>. A DataBlock is a blueprint for how to build your data. You tell it:</p>
+
+<ul>
+  <li>what kind of data you have (<code class="highlighter-rouge">blocks=</code>),</li>
+  <li>how to get the input data (<code class="highlighter-rouge">get_x=</code> or <code class="highlighter-rouge">get_items=</code>),</li>
+  <li>how to get the targets/labels (<code class="highlighter-rouge">get_y</code>),</li>
+  <li>how to perform the train/validation split (<code class="highlighter-rouge">splitter=</code>),</li>
+  <li>as well as any resizing (<code class="highlighter-rouge">items_tfms=</code>) or augmentations you want to be performed (<code class="highlighter-rouge">batch_tfms</code>).</li>
+</ul>
+
+<p>By feeding these blue prints a source (like a directory on your computer), you can use a DataBlock to create a Datasets or DataLoaders object.</p>
+
+<h1 id="dataset">Dataset</h1>
+
+<p>Dataset is a Torch object. We can find out exactly what a Dataset is because PyTorch is open source. We just have to be brave enough to parse some of the grittier implementation details.</p>
+
+<p>According to <a href="https://pytorch.org/docs/stable/_modules/torch/utils/data/dataset.html#Dataset">the source code</a> a Dataset is at its core something that allows you to grab an item if you provide the index/key for it and that you can also add items to. This is just the abstract class definition, essentially the bare bones of a what a dataset should be. If you try to make a class that inherits from <code class="highlighter-rouge">Dataset</code> you will get an error if you do not implement <code class="highlighter-rouge">__getitem__</code>, the method for grabbing items. It does this by setting the default behavior of that method to raise a <code class="highlighter-rouge">NotImplementedError</code>. You can also implement this behavior (forcing inheriting classes to define specific methods) by using the <a href="https://docs.python.org/3/library/abc.html">abc package</a>. The source code also mentions that it would have set a default for a length function, but the standard methods for making a default that is forced to change have conflicts with what a length function is “supposed” to do.</p>
+
+<p>The types of Datasets are:</p>
+
+<ul>
+  <li>IterableDataset</li>
+  <li>TensorDataset</li>
+  <li>ConcatDataset</li>
+  <li>ChainDataset</li>
+  <li>Subset</li>
+</ul>
+
+<h1 id="datasets">Datasets</h1>
+
+<p>Datasets is an object that contains a training Dataset and a validation Dataset. You can generally construct a Datasets object from a DataBlock like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dblock</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span><span class="n">blue_print_details</span><span class="p">)</span>
+<span class="n">dsets</span> <span class="o">=</span> <span class="n">dblock</span><span class="o">.</span><span class="n">datasets</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="dataloader">DataLoader</h1>
+
+<p>A DataLoader is a Dataset together with a Sampler. A Sampler is a way to create an iterator out of your Dataset, so you can do things like consume data in batches as needed. Rather than take a Dataset an manually loop through chunks of it, at each step using a chunk to update a model, a DataLoader bundles this idea together. This makes a lot of sense to encapsulate: going through your data in batches is a frequently encountered process in machine learning!</p>
+
+<p>We can see <a href="https://pytorch.org/docs/stable/_modules/torch/utils/data/sampler.html#Sampler">from the source code</a> that a Sampler is at minimum:</p>
+
+<ul>
+  <li>a way to iterate over indices of dataset elements (<code class="highlighter-rouge">__iter__</code>) and</li>
+  <li>a way to calculate the size of the returned iterators (<code class="highlighter-rouge">__len__</code>).</li>
+</ul>
+
+<p>Just like with <code class="highlighter-rouge">DataSet</code>, defining the length method is not strictly enforced by the interpreter because the various <code class="highlighter-rouge">NotImplemented</code> errors you can throw do not quite work.`</p>
+
+<p>The kinds of samplers:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">SequentialSampler</code> - go in direct 0, 1, 2, … order.</li>
+  <li><code class="highlighter-rouge">RandomSampler</code> - randomly choose observations, with or without replacement (<code class="highlighter-rouge">replacement=</code>)</li>
+  <li><code class="highlighter-rouge">SubsetRandomSampler</code> - randomly sample from a provided subset of indices, without replacement</li>
+  <li><code class="highlighter-rouge">WeightedRandomSampler</code> - for non-uniform random sampling</li>
+  <li><code class="highlighter-rouge">BatchSampler</code> - generate mini-batches of indices</li>
+</ul>
+
+<p>For DataLoader, the <a href="https://pytorch.org/docs/stable/_modules/torch/utils/data/dataloader.html#DataLoader">definition is a bit more involved</a>. In part, because it implements multiprocessing, but it also does things like creating a Sampler from the arguments if one wasn’t provided.</p>
+
+<h1 id="dataloaders">DataLoaders</h1>
+
+<p>DataLoaders is an object that contains a training DataLoader and a validation DataLoader. You can construct a DataLoaders from a DataBlock similarly to the Datasets method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dblock</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span><span class="n">blue_print_details</span><span class="p">)</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">dblock</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</code></pre></div></div>
