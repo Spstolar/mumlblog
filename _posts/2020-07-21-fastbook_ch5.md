@@ -1,3 +1,10 @@
+---
+toc: true
+layout: post
+description: A minimal example of using markdown with fastpages.
+categories: [markdown]
+title: FastBook Chapter 5 Thoughts
+---
 
 # FastBook Chapter 5 Thoughts
 

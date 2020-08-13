@@ -1,4 +1,18 @@
 
+---
+title: "Circulant Matrices and the Discrete Fourier Transform"
+description: "Awesome description"
+layout: post
+toc: false
+comments: true
+image: images/circulant_ex_1.svg
+hide: false
+search_exclude: true
+categories: [fastpages]
+metadata_key1: metadata_value1
+metadata_key2: metadata_value2
+---
+
 # Circulant Matrices and the Discrete Fourier Transform
 
 While reading [this great post](https://towardsdatascience.com/deriving-convolution-from-first-principles-4ff124888028) I saved off the paper that it references: [Discovering transforms: a tutorial on circulant matrices, circular convolution, and the discrete Fourier transform](https://arxiv.org/abs/1805.05533) by Bassam Bamieh. This last week, I dug into the paper and found it super readable and interesting. So this is just my digging into some of the details and making pictures to help things make sense for me.

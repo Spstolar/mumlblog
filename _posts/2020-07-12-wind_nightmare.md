@@ -1,4 +1,13 @@
+---
+toc: true
+layout: post
+description: A minimal example of using markdown with fastpages.
+categories: [markdown]
+title: Solving a Nightmare with a Headache
+---
+
 # Solving a Nightmare with a Headache
+
 **Issue**: The widgets in Jupyter Notebook were not all displaying. 
 
 **Non-solution**: Try re-do some installs in the virtualenv. While I am at it, let's also try out pyenv.

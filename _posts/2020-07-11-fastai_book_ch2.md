@@ -1,3 +1,11 @@
+---
+toc: true
+layout: post
+description: A minimal example of using markdown with fastpages.
+categories: [markdown]
+title: FastAI Book Chapter 2
+---
+
 # FastAI Book Chapter 2
 I went through the second chapter of the book today, which is why this blog even exists.
 Highly useful; looking forward to working on some music projects to really learn the material.
