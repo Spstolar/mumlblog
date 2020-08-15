@@ -1,1 +1,1 @@
-Sitemap: https://spstolar.github.io/mumlblog/sitemap.xml
+Sitemap: http://simonstolarczyk.com/mumlblog/sitemap.xml
