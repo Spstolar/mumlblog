@@ -1,0 +1,1 @@
+Basics: reading in a short WAV file with Python. How to take a small audio snippet made in Reaper and pull that audio into an array. #python 
